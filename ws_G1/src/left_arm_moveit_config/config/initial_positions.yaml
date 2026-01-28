@@ -1,0 +1,17 @@
+# Default initial positions for g1_dual_arm's ros2_control fake system
+
+initial_positions:
+  left_elbow_joint: 0
+  left_shoulder_pitch_joint: 0
+  left_shoulder_roll_joint: 0
+  left_shoulder_yaw_joint: 0
+  left_wrist_pitch_joint: 0
+  left_wrist_roll_joint: 0
+  left_wrist_yaw_joint: 0
+  left_hand_thumb_0_joint: 0
+  left_hand_thumb_1_joint: 0
+  left_hand_thumb_2_joint: 0
+  left_hand_index_0_joint: 0
+  left_hand_index_1_joint: 0
+  left_hand_middle_0_joint: 0
+  left_hand_middle_1_joint: 0

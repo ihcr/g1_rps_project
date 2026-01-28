@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>double_arm_moveit</name>
+  <version>0.0.0</version>
+  <description>ROS 2 package for Unitree G1 low-level control with MoveIt integration</description>
+  <maintainer email="liu@todo.todo">liu</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <!-- 构建和运行依赖 -->
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+  <depend>control_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>  <!-- 确保声明 -->
+  <depend>unitree_hg</depend>
+  <depend>moveit_ros_planning_interface</depend>  <!-- 添加 MoveIt 依赖 -->
+  <depend>moveit_core</depend>  <!-- 添加 MoveIt core 依赖 -->
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

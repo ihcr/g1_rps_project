@@ -1,0 +1,27 @@
+# Build directories
+build/
+install/
+log/
+__pycache__/
+*.pyc
+
+# Large model files (download separately)
+vosk-model-*/
+*.zip
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+captured_frame.png
+landmarks.png
+
+# Evidence and test outputs
+evidence/
+logs/
+
+# Data files
+data/
