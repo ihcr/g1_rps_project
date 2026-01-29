@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-G1 机器人底层控制 Launch 文件
+G1 机器人底层控制 Launch 文件 (左手版本)
 
 启动内容：
-1. ros2 run left_moveit real_gripper_control_right (右手夹爪控制)
+1. ros2 run left_moveit real_gripper_control_left (左手夹爪控制)
 2. ros2 run g1arm_moveit g1arm_moveit (手臂控制节点)
 3. bridge_dual_arm.py --hz 100 (双臂关节状态桥接)
 
@@ -17,7 +17,7 @@ G1 机器人底层控制 Launch 文件
     source ~/g1_rps_project/ws_G1/install/setup.bash
 
     # 启动
-    ros2 launch ~/g1_rps_project/ws_G1/src/g1_robot_base.launch.py
+    ros2 launch ~/g1_rps_project/ws_G1/src/g1_robot_base_left.launch.py
 """
 
 import os
@@ -42,20 +42,20 @@ def generate_launch_description():
 
     return LaunchDescription([
         # ============================================
-        # 1. real_gripper_control_right (立即启动)
-        #    右手夹爪控制，订阅 /rps/ai_move
+        # 1. real_gripper_control_left (立即启动)
+        #    左手夹爪控制，订阅 /rps/ai_move_left
         # ============================================
         ExecuteProcess(
             cmd=['bash', '-c',
-                f'{ros2_env} && ros2 run left_moveit real_gripper_control_right'],
+                f'{ros2_env} && ros2 run left_moveit real_gripper_control_left'],
             cwd=ws_g1_dir,
             output='screen',
-            name='real_gripper_control_right'
+            name='real_gripper_control_left'
         ),
 
         # ============================================
         # 2. g1arm_moveit (立即启动)
-        #    提供 /right_arm_controller/follow_joint_trajectory
+        #    提供 /left_arm_controller/follow_joint_trajectory
         # ============================================
         ExecuteProcess(
             cmd=['bash', '-c',

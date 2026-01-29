@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-RPS 游戏应用层 Launch 文件
+RPS 游戏应用层 Launch 文件 (左手版本)
 
 启动内容：
 1. realsense_image_bridge.py (相机图像桥接)
-2. ros_bridge.py (UDP -> ROS2 话题桥接)
-3. rps_arm_controller.py (RPS手臂摆动控制)
+2. ros_bridge_left.py (UDP -> ROS2 话题桥接，左手版本)
+3. rps_arm_controller_left.py (RPS左臂摆动控制)
 
 注意：
-- 需要先启动 g1_robot_base.launch.py
-- test2_3_combined.py 需要单独启动（因为需要conda环境）
+- 需要先启动 g1_robot_base_left.launch.py
+- test2_3_combined_left.py 需要单独启动（因为需要conda环境）
 
 使用方法：
     # 先设置环境变量
@@ -21,12 +21,12 @@ RPS 游戏应用层 Launch 文件
     source ~/g1_rps_project/ws_G1/install/setup.bash
 
     # 启动
-    ros2 launch ~/g1_rps_project/ws_G1/src/rps_game.launch.py
+    ros2 launch ~/g1_rps_project/ws_G1/src/rps_game_left.launch.py
 
     # 然后在另一个终端手动启动手势识别（需要conda）：
     cd ~/g1_rps_project/rock-paper-scissors
     conda activate rock_paper
-    python3 test2_3_combined.py
+    python3 test2_3_combined_left.py
 """
 
 import os
@@ -66,26 +66,26 @@ def generate_launch_description():
         ),
 
         # ============================================
-        # 2. ros_bridge.py (延迟1秒)
-        #    监听 UDP:5005 (AI手势) -> /rps/ai_move
-        #    监听 UDP:5007 (手臂控制) -> /rps/arm_action
+        # 2. ros_bridge_left.py (延迟1秒)
+        #    监听 UDP:5015 (AI手势) -> /rps/ai_move_left
+        #    监听 UDP:5017 (手臂控制) -> /rps/arm_action_left
         # ============================================
         TimerAction(
             period=1.0,
             actions=[
                 ExecuteProcess(
                     cmd=['bash', '-c',
-                        f'{ros2_env} && python3 ros_bridge.py'],
+                        f'{ros2_env} && python3 ros_bridge_left.py'],
                     cwd=rps_dir,
                     output='screen',
-                    name='ros_bridge'
+                    name='ros_bridge_left'
                 ),
             ]
         ),
 
         # ============================================
-        # 3. rps_arm_controller.py (延迟2秒)
-        #    订阅 /rps/arm_action，控制右臂摆动
+        # 3. rps_arm_controller_left.py (延迟2秒)
+        #    订阅 /rps/arm_action_left，控制左臂摆动
         #    需要 g1arm_moveit 的 Action Server
         # ============================================
         TimerAction(
@@ -93,10 +93,10 @@ def generate_launch_description():
             actions=[
                 ExecuteProcess(
                     cmd=['bash', '-c',
-                        f'{ros2_env} && python3 rps_arm_controller.py'],
+                        f'{ros2_env} && python3 rps_arm_controller_left.py'],
                     cwd=ws_g1_src_dir,
                     output='screen',
-                    name='rps_arm_controller'
+                    name='rps_arm_controller_left'
                 ),
             ]
         ),

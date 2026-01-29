@@ -9,17 +9,21 @@ if [ -z "$TEXT" ]; then
     exit 1
 fi
 
+# 项目目录
+PROJECT_DIR="$HOME/g1_rps_project"
+WS_G1_DIR="$PROJECT_DIR/ws_G1"
+
 # G1 ROS2 环境配置
 source /opt/ros/humble/setup.bash
 source ~/unitree_ros2/setup.sh
 source ~/unitree_ros2/cyclonedds_ws/install/setup.bash
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export ROS_DOMAIN_ID=0
-source ~/ws_G1/install/setup.bash
+source "$WS_G1_DIR/install/setup.bash"
 
 # 调用编译好的 g1_speak 节点
 # 该节点使用 AudioClient::TtsMaker() 通过 "voice" service 与 G1 通信
-G1_SPEAK_BIN="$HOME/ws_G1/install/g1_tts/lib/g1_tts/g1_speak"
+G1_SPEAK_BIN="$WS_G1_DIR/install/g1_tts/lib/g1_tts/g1_speak"
 
 if [ -x "$G1_SPEAK_BIN" ]; then
     echo "[G1 TTS] Calling g1_speak: $TEXT"
@@ -34,6 +38,7 @@ if [ -x "$G1_SPEAK_BIN" ]; then
     fi
 else
     echo "[G1 TTS] ERROR: g1_speak binary not found at $G1_SPEAK_BIN"
-    echo "[G1 TTS] Please build the g1_tts package: cd ~/ws_G1 && colcon build --packages-select g1_tts"
+    echo "[G1 TTS] Please build the g1_tts package:"
+    echo "    cd $WS_G1_DIR && colcon build --packages-select g1_tts"
     exit 1
 fi

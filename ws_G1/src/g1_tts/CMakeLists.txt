@@ -53,9 +53,27 @@ set_target_properties(g1_speak PROPERTIES
   BUILD_WITH_INSTALL_RPATH TRUE
 )
 
+# 编译 g1_say_i_win 可执行文件
+add_executable(g1_say_i_win src/g1_say_i_win.cpp)
+
+ament_target_dependencies(g1_say_i_win
+  rclcpp
+  unitree_api
+)
+
+target_link_libraries(g1_say_i_win
+  unitree_ros2
+)
+
+set_target_properties(g1_say_i_win PROPERTIES
+  INSTALL_RPATH "${UNITREE_ROS2_WS}/install/unitree_ros2/lib;${CYCLONEDDS_WS}/install/unitree_api/lib"
+  BUILD_WITH_INSTALL_RPATH TRUE
+)
+
 # 安装可执行文件
 install(TARGETS
   g1_speak
+  g1_say_i_win
   DESTINATION lib/${PROJECT_NAME}
 )
 

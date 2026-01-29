@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Rock-Paper-Scissors 综合版 - 必胜模式 + 随机模式 一键切换
+Rock-Paper-Scissors 综合版 - 必胜模式 + 随机模式 一键切换 (左手版本)
 结合 test6_visual_optimisation.py 和 test2_3.py 的功能
 
 模式切换：
@@ -9,9 +9,9 @@ Rock-Paper-Scissors 综合版 - 必胜模式 + 随机模式 一键切换
 - 必胜模式：使用启发式规则+Markov预测来智能选择AI出拳
 
 通过 TCP 接收 realsense_image_bridge.py 发送的彩色图
-与 rps_game.launch.py 配合使用：
-- 通过 UDP:5005 发送 AI 手势命令
-- 通过 UDP:5007 发送手臂控制命令
+与 rps_game_left.launch.py 配合使用：
+- 通过 UDP:5015 发送 AI 手势命令
+- 通过 UDP:5017 发送手臂控制命令
 """
 
 import cv2
@@ -29,7 +29,7 @@ from collections import deque
 
 # 获取项目根目录
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = SCRIPT_DIR  # 文件直接在 rock-paper-scissors 目录下
+PROJECT_ROOT = SCRIPT_DIR  # 因为这个文件直接在 rock-paper-scissors 目录下
 
 # -------------------------
 # TCP 连接配置 (接收图像)
@@ -38,11 +38,11 @@ TCP_IP = "127.0.0.1"
 TCP_PORT = 5006
 
 # -------------------------
-# UDP 发送配置 (控制机器人)
+# UDP 发送配置 (控制机器人) - 左手版本端口
 # -------------------------
 UDP_IP = "127.0.0.1"
-UDP_PORT_MOVE = 5005      # AI 手势命令端口
-UDP_PORT_ARM = 5007       # 手臂控制命令端口
+UDP_PORT_MOVE = 5015      # AI 手势命令端口 (左手)
+UDP_PORT_ARM = 5017       # 手臂控制命令端口 (左手)
 
 _udp_sock_move = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 _udp_sock_arm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -52,14 +52,14 @@ def send_ai_move(ai_move_name: str):
     """发送 AI 手势命令: 'rock', 'paper', 'scissors'"""
     msg = ai_move_name.strip().lower().encode("utf-8")
     _udp_sock_move.sendto(msg, (UDP_IP, UDP_PORT_MOVE))
-    print(f"[UDP] Sent AI move -> {ai_move_name}")
+    print(f"[UDP] Sent AI move (LEFT) -> {ai_move_name}")
 
 
 def send_arm_command(cmd: str):
     """发送手臂控制命令: 'raise' 或 'lower'"""
     msg = cmd.strip().lower().encode("utf-8")
     _udp_sock_arm.sendto(msg, (UDP_IP, UDP_PORT_ARM))
-    print(f"[ARM] Sent arm command -> {cmd}")
+    print(f"[ARM] Sent arm command (LEFT) -> {cmd}")
 
 
 # -------------------------
@@ -369,11 +369,12 @@ def main():
     sock = connect_to_bridge()
 
     print("=" * 60)
-    print("Rock-Paper-Scissors Combined Version")
+    print("Rock-Paper-Scissors Combined Version (LEFT HAND)")
     print("=" * 60)
     print(f"Current Mode: {current_mode}")
     print("Press 'M' to switch between RANDOM and SMART mode")
     print("Press ESC to quit")
+    print(f"UDP Ports: Move={UDP_PORT_MOVE}, Arm={UDP_PORT_ARM}")
     print("=" * 60)
 
     # 启动时抬起手臂
@@ -643,7 +644,7 @@ def main():
 
         # 模式指示器（左上角）
         mode_color = (0, 255, 255) if current_mode == MODE_RANDOM else (255, 0, 255)
-        mode_text = f"Mode: {current_mode} (Press M to switch)"
+        mode_text = f"Mode: {current_mode} [LEFT HAND] (Press M to switch)"
         cv2.putText(combined_display, mode_text, (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, mode_color, 2, cv2.LINE_AA)
 
@@ -691,7 +692,7 @@ def main():
             cv2.putText(combined_display, warning_text, (text_x, text_y),
                        cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3, cv2.LINE_AA)
 
-        cv2.imshow("Rock-Paper-Scissors (Combined)", combined_display)
+        cv2.imshow("Rock-Paper-Scissors (LEFT HAND)", combined_display)
 
         # 按键处理
         key = cv2.waitKey(1) & 0xFF
